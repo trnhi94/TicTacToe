@@ -10,14 +10,12 @@ public class GameController : MonoBehaviour
 {
     #region ----- VARIABLE -----
     public static GameController instance;
-    [SerializeField] private TextMeshProUGUI[] _txtList;
-
+    private PlayerData _playerData => DataManager.instance.playerData;
+    private List<string> _lstText => GameCache.instance.lstTextPlayerContent;
     // GAME PLAY
 
     private string playerSide;
     private int moveCount;
-    private float width;
-    private float height;
 
     #endregion
 
@@ -33,39 +31,23 @@ public class GameController : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        //_pnlGameOver.SetActive(false);
-        
 
+        Init();
+    }
+    
+    private void Init()
+    {
         moveCount = 0;
         playerSide = "X";
-        
-        _btnPlayAgain.onClick.AddListener(ButtonPlayAgainOnClick);
-        
+        _playerData.playerSide = playerSide;
+        _playerData.moveCount = moveCount;
+        DataManager.instance.SaveData();
     }
-    
-    
-
-    private void ButtonPlayAgainOnClick()
-    {
-    //    moveCount = 0;
-    //    foreach (var item in _txtList)
-    //    {
-    //        item.text = "";
-    //        item.GetComponentInParent<Button>().interactable = true;
-    //    }
-    //    //_pnlGameOver.SetActive(false);
-    //    SetPlayerColors(_playerX, _playerO);
-    }
-
-
-    
 
     private void GameOver()
     {
-        //foreach (var item in _txtList)
-        //{
-        //    item.GetComponentInParent<Button>().interactable = false;
-        //}
+        pnlManager.instance.GameOver();
+        
         //_pnlGameOver.transform.position -= height * Vector3.up;
         //_pnlGameOver.SetActive(true);
         //_gameOverBoard.SetActive(false);
@@ -73,42 +55,34 @@ public class GameController : MonoBehaviour
         //{
         //    _gameOverBoard.transform.localScale = Vector3.zero;
         //    _gameOverBoard.SetActive(true);
-        //    if(moveCount >= 9)
-        //    {
-        //        SetGameOverText("RAW!");
-        //    }
-        //    else
-        //    {
-        //        if (playerSide == "O")
-        //        {
-        //            SetGameOverText("Player 1 is a Winner!");
-        //        }
-        //        else
-        //        {
-        //            SetGameOverText("Player 2 is a Winner!");
-        //        }
-        //    }
-        //    _gameOverBoard.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutBounce);
+        //    
+        //    
+        //    
+        //    
+        //    
+        //    
+        //    
+        //    
+        //    
+        //    
+        //    
+        //    
+        //    
+        //    
+        //    
+        //    
         //});
     }
 
-    private void ChangeSides()
+    public void ChangeSides()
     {
-        //playerSide = (playerSide == "X") ? "O" : "X";
-        //if(playerSide == "X")
-        //{
-        //    SetPlayerColors(_playerX, _playerO);
-        //}
-        //else
-        //{
-        //    SetPlayerColors(_playerO, _playerX);
-        //}
+        playerSide = (playerSide == "X") ? "O" : "X";
+        pnlGameScene.instance.SetPlayerColors(playerSide);
+        _playerData.playerSide = playerSide;
+        DataManager.instance.SaveData();
     }
 
-    private void SetGameOverText(string value)
-    {
-        _txtGameOverTitle.text = value;
-    }
+   
 
     private void OnDisable()
     {
@@ -118,7 +92,7 @@ public class GameController : MonoBehaviour
         //_btnMultiplayer.onClick.RemoveAllListeners();
         //_btnSetting.onClick.RemoveAllListeners();
 
-        _btnPlayAgain.onClick.RemoveAllListeners();
+        //_btnPlayAgain.onClick.RemoveAllListeners();
     }
 
     #endregion
@@ -130,54 +104,67 @@ public class GameController : MonoBehaviour
         return playerSide;
     }
 
-    //public void EndTurn()
-    //{
-    //    moveCount++;
-    //    if (_txtList[0].text == playerSide && _txtList[1].text == playerSide && _txtList[2].text == playerSide)
-    //    {
-    //        GameOver();
+    public void EndTurn()
+    {
+        moveCount++;
+        _playerData.moveCount = moveCount;
+
+        if (_lstText[0] == playerSide && _lstText[1] == playerSide && _lstText[2] == playerSide)
+        {
+            GameOver();
+        }
+        //    else if (_txtList[3].text == playerSide && _txtList[4].text == playerSide && _txtList[5].text == playerSide)
+        //    {
+        //        GameOver();
+        //    }
+        //    else if (_txtList[6].text == playerSide && _txtList[7].text == playerSide && _txtList[8].text == playerSide)
+        //    {
+        //        GameOver();
+        //    }
+        //    else if (_txtList[0].text == playerSide && _txtList[3].text == playerSide && _txtList[6].text == playerSide)
+        //    {
+        //        GameOver();
+        //    }
+        //    else if (_txtList[1].text == playerSide && _txtList[4].text == playerSide && _txtList[7].text == playerSide)
+        //    {
+        //        GameOver();
+        //    }
+        //    else if (_txtList[2].text == playerSide && _txtList[5].text == playerSide && _txtList[8].text == playerSide)
+        //    {
+        //        GameOver();
+        //    }
+        //    else if (_txtList[3].text == playerSide && _txtList[6].text == playerSide && _txtList[9].text == playerSide)
+        //    {
+        //        GameOver();
+        //    }
+        //    else if (_txtList[0].text == playerSide && _txtList[4].text == playerSide && _txtList[8].text == playerSide)
+        //    {
+        //        GameOver();
+        //    }
+        //    else if (_txtList[2].text == playerSide && _txtList[4].text == playerSide && _txtList[6].text == playerSide)
+        //    {
+        //        GameOver();
+        //    }
+        //    else if (moveCount >= 9)
+        //    {
+        //        GameOver();
+        //    }
+        //    else
+        //    {
+        
     //    }
-    //    else if (_txtList[3].text == playerSide && _txtList[4].text == playerSide && _txtList[5].text == playerSide)
-    //    {
-    //        GameOver();
-    //    }
-    //    else if (_txtList[6].text == playerSide && _txtList[7].text == playerSide && _txtList[8].text == playerSide)
-    //    {
-    //        GameOver();
-    //    }
-    //    else if (_txtList[0].text == playerSide && _txtList[3].text == playerSide && _txtList[6].text == playerSide)
-    //    {
-    //        GameOver();
-    //    }
-    //    else if (_txtList[1].text == playerSide && _txtList[4].text == playerSide && _txtList[7].text == playerSide)
-    //    {
-    //        GameOver();
-    //    }
-    //    else if (_txtList[2].text == playerSide && _txtList[5].text == playerSide && _txtList[8].text == playerSide)
-    //    {
-    //        GameOver();
-    //    }
-    //    else if (_txtList[3].text == playerSide && _txtList[6].text == playerSide && _txtList[9].text == playerSide)
-    //    {
-    //        GameOver();
-    //    }
-    //    else if (_txtList[0].text == playerSide && _txtList[4].text == playerSide && _txtList[8].text == playerSide)
-    //    {
-    //        GameOver();
-    //    }
-    //    else if (_txtList[2].text == playerSide && _txtList[4].text == playerSide && _txtList[6].text == playerSide)
-    //    {
-    //        GameOver();
-    //    }
-    //    else if (moveCount >= 9)
-    //    {
-    //        GameOver();
-    //    }
-    //    else
-    //    {
-    //        ChangeSides();
-    //    }
-    //}
+    }
+
+    public void PlayAgain()
+    {
+        moveCount = 0;
+        //foreach (var item in _txtList)
+        //{
+        //    item.text = "";
+        //    item.GetComponentInParent<Button>().interactable = true;
+        //}
+        //SetPlayerColors(_playerX, _playerO);
+    }
 
     #endregion
 }

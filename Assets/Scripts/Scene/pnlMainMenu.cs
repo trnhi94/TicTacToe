@@ -24,6 +24,11 @@ public class pnlMainMenu : MonoBehaviour
 
     private void OnEnable()
     {
+        Init();
+    }
+
+    private void Init()
+    {
         _btnNewGame.onClick.AddListener(OnButtonNewGameClick);
         _btnMultiplayer.onClick.AddListener(OnButtonMultiplayerClick);
         _btnSetting.onClick.AddListener(OnButtonSettingClick);

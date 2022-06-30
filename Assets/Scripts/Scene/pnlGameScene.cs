@@ -7,8 +7,10 @@ using UnityEngine.UI;
 
 public class pnlGameScene : MonoBehaviour
 {
-    #region ----- VARIABLE -----
+    public static pnlGameScene instance; 
 
+    #region ----- VARIABLE -----
+    [SerializeField] private List<TextMeshProUGUI> _lstText;
     [SerializeField] private GameObject _background;
     [SerializeField] private GameObject _pnlBoard;
     [SerializeField] private TextMeshProUGUI _txtTitle;
@@ -17,6 +19,8 @@ public class pnlGameScene : MonoBehaviour
     [SerializeField] private Player _playerO;
     [SerializeField] private PlayerColor _activePlayerColor;
     [SerializeField] private PlayerColor _inactivePlayerColor;
+    private PlayerData _playerData => DataManager.instance.playerData;
+
 
     private float width;
     private float height;
@@ -27,17 +31,55 @@ public class pnlGameScene : MonoBehaviour
 
     private void OnEnable()
     {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
+        Init();
+    }
+
+    private void Init()
+    {
         width = _background.GetComponent<RectTransform>().rect.width;
         height = _background.GetComponent<RectTransform>().rect.height;
         _pnlBoard.gameObject.SetActive(false);
         _btnMenu.gameObject.SetActive(false);
         _btnMenu.onClick.AddListener(OnButtonMenuOnClick);
+
+        _lstText ??= new List<TextMeshProUGUI>();
+
+        for (int i = 0; i < _playerData.lstTextPlayerContent.Count; i++)
+        {
+            _lstText[i].text = _playerData.lstTextPlayerContent[i];
+        }
+
         MoveIn();
+    }
+
+    public void SetPlayerColors(string playerSide)
+    {
+        if(playerSide == "X")
+        {
+            _playerX.imgPlayer.color = _activePlayerColor.imgColor;
+            _playerO.imgPlayer.color = _inactivePlayerColor.imgColor;
+        }
+        else
+        {
+            _playerX.imgPlayer.color = _inactivePlayerColor.imgColor;
+            _playerO.imgPlayer.color = _activePlayerColor.imgColor;
+        }
+        
     }
 
     private void OnButtonMenuOnClick()
     {
-        pnlManager.instance.MainMenu();
+        pnlManager.instance.GameOver();
+        //pnlManager.instance.MainMenu();
     }
 
     #endregion
@@ -64,7 +106,7 @@ public class pnlGameScene : MonoBehaviour
             _playerO.imgPlayer.transform.position += width * Vector3.right;
             _playerO.imgPlayer.transform.DOLocalMove(new Vector3(450f, 1040f), 1f).SetEase(Ease.Linear).OnComplete(() =>
             {
-                SetPlayerColors(_playerX, _playerO);
+                SetPlayerColors(_playerData.playerSide);
             });
 
             _btnMenu.transform.position += width * Vector3.right;
@@ -73,11 +115,6 @@ public class pnlGameScene : MonoBehaviour
         });
     }
 
-    private void SetPlayerColors(Player newPlayer, Player oldPlayer)
-    {
-        newPlayer.imgPlayer.color = _activePlayerColor.imgColor;
-        oldPlayer.imgPlayer.color = _inactivePlayerColor.imgColor;
-    }
 
     #endregion
 }
