@@ -21,9 +21,19 @@ public class PlayerData
     public List<string> lstTextPlayerContent;
     public string playerSide;
     public int moveCount;
+
     public PlayerData()
     {
         lstTextPlayerContent = new List<string>();
+        playerSide = "X";
+        moveCount = 0;
+    }
+
+    public void ResetPlayerData()
+    {
+        lstTextPlayerContent.Clear();
+        moveCount = 0;
+        playerSide = "X";
     }
 }
 #endregion

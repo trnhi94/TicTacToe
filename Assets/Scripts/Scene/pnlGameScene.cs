@@ -7,20 +7,15 @@ using UnityEngine.UI;
 
 public class pnlGameScene : MonoBehaviour
 {
-    public static pnlGameScene instance; 
-
     #region ----- VARIABLE -----
     [SerializeField] private List<TextMeshProUGUI> _lstText;
     [SerializeField] private GameObject _background;
     [SerializeField] private GameObject _pnlBoard;
     [SerializeField] private TextMeshProUGUI _txtTitle;
     [SerializeField] private Button _btnMenu;
-    [SerializeField] private Player _playerX;
-    [SerializeField] private Player _playerO;
-    [SerializeField] private PlayerColor _activePlayerColor;
-    [SerializeField] private PlayerColor _inactivePlayerColor;
+    [SerializeField] private GameObject _playerX;
+    [SerializeField] private GameObject _playerO;
     private PlayerData _playerData => DataManager.instance.playerData;
-
 
     private float width;
     private float height;
@@ -31,49 +26,28 @@ public class pnlGameScene : MonoBehaviour
 
     private void OnEnable()
     {
-        if(instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
-
         Init();
     }
 
     private void Init()
     {
+        _playerData.ResetPlayerData();
         width = _background.GetComponent<RectTransform>().rect.width;
         height = _background.GetComponent<RectTransform>().rect.height;
         _pnlBoard.gameObject.SetActive(false);
         _btnMenu.gameObject.SetActive(false);
         _btnMenu.onClick.AddListener(OnButtonMenuOnClick);
-
         _lstText ??= new List<TextMeshProUGUI>();
-
-        for (int i = 0; i < _playerData.lstTextPlayerContent.Count; i++)
+        for (int i = 0; i < _lstText.Count; i++)
         {
-            _lstText[i].text = _playerData.lstTextPlayerContent[i];
+            if(_lstText[i].text != "")
+            {
+                _lstText[i].text = "";
+                _lstText[i].transform.parent.GetComponent<GirdSpace>().ResetState();
+            }
+            _playerData.lstTextPlayerContent.Add(_lstText[i].text);
         }
-
-        MoveIn();
-    }
-
-    public void SetPlayerColors(string playerSide)
-    {
-        if(playerSide == "X")
-        {
-            _playerX.imgPlayer.color = _activePlayerColor.imgColor;
-            _playerO.imgPlayer.color = _inactivePlayerColor.imgColor;
-        }
-        else
-        {
-            _playerX.imgPlayer.color = _inactivePlayerColor.imgColor;
-            _playerO.imgPlayer.color = _activePlayerColor.imgColor;
-        }
-        
+        DataManager.instance.SaveData();
     }
 
     private void OnButtonMenuOnClick()
@@ -86,7 +60,15 @@ public class pnlGameScene : MonoBehaviour
 
     #region ----- PUBLIC FUNCTIONS -----
 
+    public void StartNewGame()
+    {
+        MoveIn();
+    }
 
+    public void ResetBoardGame()
+    {
+        _pnlBoard.gameObject.SetActive(true);
+    }
 
     #endregion.
 
@@ -100,21 +82,17 @@ public class pnlGameScene : MonoBehaviour
             _pnlBoard.transform.localScale = Vector3.zero;
             _pnlBoard.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutBounce);
 
-            _playerX.imgPlayer.transform.position -= width * Vector3.right;
-            _playerX.imgPlayer.transform.DOLocalMove(new Vector3(-450f, 1040f), 1f).SetEase(Ease.Linear);
+            _playerX.transform.position -= width * Vector3.right;
+            _playerX.transform.DOLocalMove(new Vector3(-450f, 1040f), 1f).SetEase(Ease.Linear);
 
-            _playerO.imgPlayer.transform.position += width * Vector3.right;
-            _playerO.imgPlayer.transform.DOLocalMove(new Vector3(450f, 1040f), 1f).SetEase(Ease.Linear).OnComplete(() =>
-            {
-                SetPlayerColors(_playerData.playerSide);
-            });
+            _playerO.transform.position += width * Vector3.right;
+            _playerO.transform.DOLocalMove(new Vector3(450f, 1040f), 1f).SetEase(Ease.Linear);
 
             _btnMenu.transform.position += width * Vector3.right;
             _btnMenu.gameObject.SetActive(true);
             _btnMenu.transform.DOLocalMove(new Vector3(740f, 1500f), 1f).SetEase(Ease.Linear);
         });
     }
-
 
     #endregion
 }

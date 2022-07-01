@@ -57,7 +57,15 @@ public class pnlManager : MonoBehaviour
     public void StartGame()
     {
         Hide();
+        _pnlGameScene.StartNewGame();
         _pnlGameScene.gameObject.SetActive(true);
+    }
+
+    public void PlayAgain()
+    {
+        Hide();
+        _pnlGameScene.gameObject.SetActive(true);
+        _pnlGameScene.ResetBoardGame();
     }
 
     public void GameOver()

@@ -8,10 +8,17 @@ public class DataManager : MonoBehaviour
     public static DataManager instance;
 
     private static string DataPath;
+    private PlayerData _playerData;
     public PlayerData playerData
     {
-        get;
-        private set;
+        get
+        {
+            if(_playerData == null)
+            {
+                LoadData();
+            }
+            return _playerData;
+        }
     }
 
     private void Awake()
@@ -51,11 +58,11 @@ public class DataManager : MonoBehaviour
     {
         if(File.Exists($"{DataPath}/PlayerData.dat"))
         {
-            playerData = JsonUtility.FromJson<PlayerData>(File.ReadAllText($"{DataPath}/PlayerData.dat"));
+            _playerData = JsonUtility.FromJson<PlayerData>(File.ReadAllText($"{DataPath}/PlayerData.dat"));
         }
         else
         {
-            playerData = new PlayerData();
+            _playerData = new PlayerData();
             SaveData();
         }
     }

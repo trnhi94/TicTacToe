@@ -12,10 +12,18 @@ public class GameController : MonoBehaviour
     public static GameController instance;
     private PlayerData _playerData => DataManager.instance.playerData;
     private List<string> _lstText => GameCache.instance.lstTextPlayerContent;
+    public bool isRaw
+    {
+        get;
+        private set;
+    }
     // GAME PLAY
-
     private string playerSide;
     private int moveCount;
+    [SerializeField] private Player _playerX;
+    [SerializeField] private Player _playerO;
+    [SerializeField] private PlayerColor _activePlayerColor;
+    [SerializeField] private PlayerColor _inactivePlayerColor;
 
     #endregion
 
@@ -31,68 +39,53 @@ public class GameController : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+    }
 
+    private void Start()
+    {
         Init();
     }
-    
+
     private void Init()
     {
+        isRaw = false;
         moveCount = 0;
         playerSide = "X";
-        _playerData.playerSide = playerSide;
-        _playerData.moveCount = moveCount;
         DataManager.instance.SaveData();
+        SetPlayerColors(playerSide);
     }
 
     private void GameOver()
     {
         pnlManager.instance.GameOver();
-        
-        //_pnlGameOver.transform.position -= height * Vector3.up;
-        //_pnlGameOver.SetActive(true);
-        //_gameOverBoard.SetActive(false);
-        //_pnlGameOver.transform.DOLocalMoveY(0f, 1f).SetEase(Ease.Linear).OnComplete(() =>
-        //{
-        //    _gameOverBoard.transform.localScale = Vector3.zero;
-        //    _gameOverBoard.SetActive(true);
-        //    
-        //    
-        //    
-        //    
-        //    
-        //    
-        //    
-        //    
-        //    
-        //    
-        //    
-        //    
-        //    
-        //    
-        //    
-        //    
-        //});
+    }
+
+    public void SetPlayerColors(string playerSide)
+    {
+        if (playerSide == "X")
+        {
+            _playerX.imgPlayer.color = _activePlayerColor.imgColor;
+            _playerO.imgPlayer.color = _inactivePlayerColor.imgColor;
+        }
+        else
+        {
+            _playerX.imgPlayer.color = _inactivePlayerColor.imgColor;
+            _playerO.imgPlayer.color = _activePlayerColor.imgColor;
+        }
+
     }
 
     public void ChangeSides()
     {
         playerSide = (playerSide == "X") ? "O" : "X";
-        pnlGameScene.instance.SetPlayerColors(playerSide);
+        SetPlayerColors(playerSide);
         _playerData.playerSide = playerSide;
         DataManager.instance.SaveData();
     }
 
-   
-
     private void OnDisable()
     {
-        //_btnMenu.onClick.RemoveAllListeners();
-
-        //_btnNewGame.onClick.RemoveAllListeners();
-        //_btnMultiplayer.onClick.RemoveAllListeners();
-        //_btnSetting.onClick.RemoveAllListeners();
-
-        //_btnPlayAgain.onClick.RemoveAllListeners();
+        
     }
 
     #endregion
@@ -108,62 +101,39 @@ public class GameController : MonoBehaviour
     {
         moveCount++;
         _playerData.moveCount = moveCount;
-
-        if (_lstText[0] == playerSide && _lstText[1] == playerSide && _lstText[2] == playerSide)
+        
+        if ((_lstText[0] == playerSide && _lstText[1] == playerSide && _lstText[2] == playerSide) ||
+            (_lstText[3] == playerSide && _lstText[4] == playerSide && _lstText[5] == playerSide) ||
+            (_lstText[6] == playerSide && _lstText[7] == playerSide && _lstText[8] == playerSide) ||
+            (_lstText[0] == playerSide && _lstText[3] == playerSide && _lstText[6] == playerSide) ||
+            (_lstText[1] == playerSide && _lstText[4] == playerSide && _lstText[7] == playerSide) ||
+            (_lstText[2] == playerSide && _lstText[5] == playerSide && _lstText[8] == playerSide) ||
+            (_lstText[0] == playerSide && _lstText[4] == playerSide && _lstText[8] == playerSide) ||                                               
+            (_lstText[2] == playerSide && _lstText[4] == playerSide && _lstText[6] == playerSide))
         {
             GameOver();
+            return;
         }
-        //    else if (_txtList[3].text == playerSide && _txtList[4].text == playerSide && _txtList[5].text == playerSide)
-        //    {
-        //        GameOver();
-        //    }
-        //    else if (_txtList[6].text == playerSide && _txtList[7].text == playerSide && _txtList[8].text == playerSide)
-        //    {
-        //        GameOver();
-        //    }
-        //    else if (_txtList[0].text == playerSide && _txtList[3].text == playerSide && _txtList[6].text == playerSide)
-        //    {
-        //        GameOver();
-        //    }
-        //    else if (_txtList[1].text == playerSide && _txtList[4].text == playerSide && _txtList[7].text == playerSide)
-        //    {
-        //        GameOver();
-        //    }
-        //    else if (_txtList[2].text == playerSide && _txtList[5].text == playerSide && _txtList[8].text == playerSide)
-        //    {
-        //        GameOver();
-        //    }
-        //    else if (_txtList[3].text == playerSide && _txtList[6].text == playerSide && _txtList[9].text == playerSide)
-        //    {
-        //        GameOver();
-        //    }
-        //    else if (_txtList[0].text == playerSide && _txtList[4].text == playerSide && _txtList[8].text == playerSide)
-        //    {
-        //        GameOver();
-        //    }
-        //    else if (_txtList[2].text == playerSide && _txtList[4].text == playerSide && _txtList[6].text == playerSide)
-        //    {
-        //        GameOver();
-        //    }
-        //    else if (moveCount >= 9)
-        //    {
-        //        GameOver();
-        //    }
-        //    else
-        //    {
-        
-    //    }
+        else if (moveCount >= 9)
+        {
+            isRaw = true;
+            GameOver();
+        }
+        else
+        {
+            ChangeSides();
+        }
+    }
+
+    public string Raw()
+    {
+        return "RAW!";
     }
 
     public void PlayAgain()
     {
-        moveCount = 0;
-        //foreach (var item in _txtList)
-        //{
-        //    item.text = "";
-        //    item.GetComponentInParent<Button>().interactable = true;
-        //}
-        //SetPlayerColors(_playerX, _playerO);
+        pnlManager.instance.PlayAgain();
+        Init();
     }
 
     #endregion

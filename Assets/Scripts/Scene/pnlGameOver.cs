@@ -29,26 +29,19 @@ public class pnlGameOver : MonoBehaviour
         height = GetComponent<RectTransform>().rect.height;
         _board.SetActive(false);
         _btnPlayAgain.onClick.AddListener(OnButtonPlayAgainClick);
-        if (DataManager.instance.playerData.moveCount >= 9)
+        if(GameController.instance.isRaw)
         {
             SetGameOverText("RAW!");
         }
         else
         {
-            if (DataManager.instance.playerData.playerSide == "O")
-            {
-                SetGameOverText("Player 1 is a Winner!");
-            }
-            else
-            {
-                SetGameOverText("Player 2 is a Winner!");
-            }
+            SetGameOverText(DataManager.instance.playerData.playerSide + " is a Winner!");
         }
         MoveIn();
     }
     private void OnButtonPlayAgainClick()
     {
-        pnlManager.instance.StartGame();
+        GameController.instance.PlayAgain();
     }
 
     private void OnDisable()
