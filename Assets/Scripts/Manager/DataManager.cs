@@ -37,6 +37,7 @@ public class DataManager : MonoBehaviour
     private void Init()
     {
         DataPath = Application.persistentDataPath;
+        Debug.Log(DataPath);
         LoadData();
     }
 

@@ -75,26 +75,16 @@ public class GameController : MonoBehaviour
 
     }
 
+    #endregion
+
+    #region ----- PUBLIC FUNCTIONS -----
+
     public void ChangeSides()
     {
         playerSide = (playerSide == "X") ? "O" : "X";
         SetPlayerColors(playerSide);
         _playerData.playerSide = playerSide;
         DataManager.instance.SaveData();
-    }
-
-    private void OnDisable()
-    {
-        
-    }
-
-    #endregion
-
-    #region ----- PUBLIC FUNCTIONS -----
-
-    public string GetPlayerSide()
-    {
-        return playerSide;
     }
 
     public void EndTurn()

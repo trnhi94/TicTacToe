@@ -17,12 +17,11 @@ public class GirdSpace : MonoBehaviour
 
     private void SetSpace()
     {
-        _txtPlayer.text = GameController.instance.GetPlayerSide();
+        _txtPlayer.text = GameCache.instance.playerSide;
         DataManager.instance.playerData.lstTextPlayerContent[id] = _txtPlayer.text;
         _btnGirdSpace.interactable = false;
         DataManager.instance.SaveData();
         GameController.instance.EndTurn();
-
     }
 
     private void OnDisable()
