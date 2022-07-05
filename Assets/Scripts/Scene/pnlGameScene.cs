@@ -36,6 +36,8 @@ public class pnlGameScene : MonoBehaviour
         height = _background.GetComponent<RectTransform>().rect.height;
         _pnlBoard.gameObject.SetActive(false);
         _btnMenu.gameObject.SetActive(false);
+        _playerX.SetActive(false);
+        _playerO.SetActive(false);
         _btnMenu.onClick.AddListener(OnButtonMenuOnClick);
         _lstText ??= new List<TextMeshProUGUI>();
         for (int i = 0; i < _lstText.Count; i++)
@@ -52,8 +54,7 @@ public class pnlGameScene : MonoBehaviour
 
     private void OnButtonMenuOnClick()
     {
-        pnlManager.instance.GameOver();
-        //pnlManager.instance.MainMenu();
+        pnlManager.instance.MainMenu();
     }
 
     #endregion
@@ -68,6 +69,9 @@ public class pnlGameScene : MonoBehaviour
     public void ResetBoardGame()
     {
         _pnlBoard.gameObject.SetActive(true);
+        _btnMenu.gameObject.SetActive(true);
+        _playerX.SetActive(true);
+        _playerO.SetActive(true);
     }
 
     #endregion.
@@ -75,22 +79,24 @@ public class pnlGameScene : MonoBehaviour
     #region ----- ANIMATION -----
     private void MoveIn()
     {
-        _txtTitle.transform.position += height * Vector3.up;
-        _txtTitle.transform.DOLocalMoveY(1040, 1f).SetEase(Ease.Linear).OnComplete(() =>
+        _txtTitle.transform.localScale = Vector3.zero;
+        _txtTitle.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutBounce).OnComplete(() =>
         {
-            _pnlBoard.gameObject.SetActive(true);
             _pnlBoard.transform.localScale = Vector3.zero;
+            _pnlBoard.gameObject.SetActive(true);
             _pnlBoard.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutBounce);
 
-            _playerX.transform.position -= width * Vector3.right;
-            _playerX.transform.DOLocalMove(new Vector3(-450f, 1040f), 1f).SetEase(Ease.Linear);
+            _playerX.transform.localScale = Vector3.zero;
+            _playerX.SetActive(true);
+            _playerX.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutBounce);
 
-            _playerO.transform.position += width * Vector3.right;
-            _playerO.transform.DOLocalMove(new Vector3(450f, 1040f), 1f).SetEase(Ease.Linear);
+            _playerO.transform.localScale = Vector3.zero;
+            _playerO.SetActive(true);
+            _playerO.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutBounce);
 
-            _btnMenu.transform.position += width * Vector3.right;
+            _btnMenu.transform.localScale = Vector3.zero;
             _btnMenu.gameObject.SetActive(true);
-            _btnMenu.transform.DOLocalMove(new Vector3(740f, 1500f), 1f).SetEase(Ease.Linear);
+            _btnMenu.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutBounce);
         });
     }
 

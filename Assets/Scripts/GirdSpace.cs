@@ -17,7 +17,15 @@ public class GirdSpace : MonoBehaviour
 
     private void SetSpace()
     {
-        _txtPlayer.text = GameCache.instance.playerSide;
+        _txtPlayer.text = DataManager.instance.playerData.playerSide;
+        if(_txtPlayer.text == "X")
+        {
+            _txtPlayer.color = Color.blue;
+        }
+        else
+        {
+            _txtPlayer.color = Color.red;
+        }
         DataManager.instance.playerData.lstTextPlayerContent[id] = _txtPlayer.text;
         _btnGirdSpace.interactable = false;
         DataManager.instance.SaveData();
@@ -31,6 +39,7 @@ public class GirdSpace : MonoBehaviour
 
     public void ResetState()
     {
-        _btnGirdSpace.interactable = true;
+        //_btnGirdSpace.interactable = true;
+
     }
 }
