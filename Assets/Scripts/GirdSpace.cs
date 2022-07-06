@@ -39,7 +39,6 @@ public class GirdSpace : MonoBehaviour
 
     public void ResetState()
     {
-        //_btnGirdSpace.interactable = true;
-
+        _btnGirdSpace.interactable = true;
     }
 }

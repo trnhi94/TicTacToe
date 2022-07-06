@@ -11,6 +11,7 @@ public class pnlManager : MonoBehaviour
     [SerializeField] private pnlMainMenu _pnlMainMenu;
     [SerializeField] private pnlGameScene _pnlGameScene;
     [SerializeField] private pnlGameOver _pnlGameOver;
+    [SerializeField] private pnlSetting _pnlSetting;
 
     #endregion
 
@@ -37,6 +38,7 @@ public class pnlManager : MonoBehaviour
         _pnlMainMenu.gameObject.SetActive(false);
         _pnlGameScene.gameObject.SetActive(false);
         _pnlGameOver.gameObject.SetActive(false);
+        _pnlSetting.gameObject.SetActive(false);
     }
 
     private void OnDisable()
@@ -59,6 +61,12 @@ public class pnlManager : MonoBehaviour
         Hide();
         _pnlGameScene.StartNewGame();
         _pnlGameScene.gameObject.SetActive(true);
+    }
+
+    public void Setting()
+    {
+        Hide();
+        _pnlSetting.gameObject.SetActive(true);
     }
 
     public void PlayAgain()
