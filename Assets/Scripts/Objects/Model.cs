@@ -21,12 +21,16 @@ public class PlayerData
     public List<string> lstTextPlayerContent;
     public string playerSide;
     public int moveCount;
+    public bool music;
+    public bool sound;
 
     public PlayerData()
     {
         lstTextPlayerContent = new List<string>();
         playerSide = "X";
         moveCount = 0;
+        music = true;
+        sound = true;
     }
 
     public void ResetPlayerData()

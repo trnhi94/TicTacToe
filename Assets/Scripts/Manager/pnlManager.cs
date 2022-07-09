@@ -12,6 +12,7 @@ public class pnlManager : MonoBehaviour
     [SerializeField] private pnlGameScene _pnlGameScene;
     [SerializeField] private pnlGameOver _pnlGameOver;
     [SerializeField] private pnlSetting _pnlSetting;
+    [SerializeField] private GameObject _ignoreCast;
 
     #endregion
 
@@ -43,7 +44,7 @@ public class pnlManager : MonoBehaviour
 
     private void OnDisable()
     {
-
+        StopAllCoroutines();
     }
 
     #endregion
@@ -78,8 +79,19 @@ public class pnlManager : MonoBehaviour
 
     public void GameOver()
     {
+        StartCoroutine(TurnOnGameOverPanel());
+    }
+
+    IEnumerator TurnOnGameOverPanel()
+    {
+        yield return new WaitForSeconds(0.3f);
         Hide();
         _pnlGameOver.gameObject.SetActive(true);
+    }
+
+    public void IgnoreCast(bool value)
+    {
+        _ignoreCast.SetActive(value);
     }
 
     #endregion

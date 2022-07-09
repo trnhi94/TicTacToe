@@ -57,6 +57,11 @@ public class pnlGameScene : MonoBehaviour
         pnlManager.instance.MainMenu();
     }
 
+    private void OnDisable()
+    {
+        SoundManager.instance.PlayButtonClickSound();
+        _btnMenu.onClick.RemoveAllListeners();
+    }
     #endregion
 
     #region ----- PUBLIC FUNCTIONS -----

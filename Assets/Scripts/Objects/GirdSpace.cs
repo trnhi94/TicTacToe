@@ -17,6 +17,7 @@ public class GirdSpace : MonoBehaviour
 
     private void SetSpace()
     {
+        SoundManager.instance.PlaySlotClick();
         _txtPlayer.text = DataManager.instance.playerData.playerSide;
         if(_txtPlayer.text == "X")
         {

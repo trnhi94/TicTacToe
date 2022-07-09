@@ -21,6 +21,7 @@ public class pnlGameOver : MonoBehaviour
     private void OnEnable()
     {
         Init();
+        SoundManager.instance.PlayWinSound();
     }
 
     private void Init()
@@ -39,14 +40,16 @@ public class pnlGameOver : MonoBehaviour
         }
         MoveIn();
     }
+
     private void OnButtonPlayAgainClick()
     {
-        GameController.instance.PlayAgain();
+        SoundManager.instance.PlayButtonClickSound();
+        MoveOut();
     }
 
     private void OnDisable()
     {
-        
+        _btnPlayAgain.onClick.RemoveAllListeners();
     }
 
     #endregion
@@ -56,7 +59,6 @@ public class pnlGameOver : MonoBehaviour
     {
         _txtTitle.text = value;
     }
-
 
     #endregion
 
@@ -71,7 +73,10 @@ public class pnlGameOver : MonoBehaviour
 
     private void MoveOut()
     {
-
+        _board.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.Linear).OnComplete(() =>
+        {
+            GameController.instance.PlayAgain();
+        });
     }
 
     #endregion

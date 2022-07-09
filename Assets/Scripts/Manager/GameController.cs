@@ -51,8 +51,11 @@ public class GameController : MonoBehaviour
         isRaw = false;
         moveCount = 0;
         playerSide = "X";
+        SoundManager.instance.StopMusic(!_playerData.music);
+        SoundManager.instance.StopSound(!_playerData.sound);
         DataManager.instance.SaveData();
         SetPlayerColors(playerSide);
+
     }
 
     private void GameOver()

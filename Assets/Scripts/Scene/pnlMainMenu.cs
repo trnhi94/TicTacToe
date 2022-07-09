@@ -29,6 +29,7 @@ public class pnlMainMenu : MonoBehaviour
 
     private void Init()
     {
+        pnlManager.instance.IgnoreCast(true);
         _btnNewGame.onClick.AddListener(OnButtonNewGameClick);
         _btnMultiplayer.onClick.AddListener(OnButtonMultiplayerClick);
         _btnSetting.onClick.AddListener(OnButtonSettingClick);
@@ -46,17 +47,20 @@ public class pnlMainMenu : MonoBehaviour
 
     private void OnButtonNewGameClick()
     {
+        SoundManager.instance.PlayButtonClickSound();
         pnlManager.instance.StartGame();
     }
 
     private void OnButtonMultiplayerClick()
     {
+        SoundManager.instance.PlayButtonClickSound();
         pnlManager.instance.StartGame();
     }
 
     private void OnButtonSettingClick()
     {
-
+        SoundManager.instance.PlayButtonClickSound();
+        pnlManager.instance.Setting();
     }
 
     private void OnDisable()
@@ -85,8 +89,10 @@ public class pnlMainMenu : MonoBehaviour
         {
             _pnlOptionBoard.transform.GetChild(i).gameObject.SetActive(true);
             _pnlOptionBoard.transform.GetChild(i).transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutBounce);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.2f);
         }
+        yield return new WaitForSeconds(0.5f);
+        pnlManager.instance.IgnoreCast(false);
     }
 
     private void MoveOut()
