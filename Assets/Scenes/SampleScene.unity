@@ -1135,6 +1135,7 @@ MonoBehaviour:
     imgColor: {r: 1, g: 0.8193936, b: 0, a: 1}
   _inactivePlayerColor:
     imgColor: {r: 1, g: 1, b: 1, a: 1}
+  ePlayMode: 0
 --- !u!4 &1976084114
 Transform:
   m_ObjectHideFlags: 0

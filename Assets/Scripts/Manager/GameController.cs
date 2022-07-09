@@ -25,6 +25,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private PlayerColor _activePlayerColor;
     [SerializeField] private PlayerColor _inactivePlayerColor;
 
+    public EPlayMode ePlayMode;
+
     #endregion
 
     #region ----- PRIVATE FUNCTIONS -----

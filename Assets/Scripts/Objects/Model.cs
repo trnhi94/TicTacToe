@@ -43,7 +43,7 @@ public class PlayerData
 #endregion
 
 #region ----- ENUM -----
-public enum PlayMode
+public enum EPlayMode
 {
     single = 1,
     multi = 2,

@@ -11,7 +11,7 @@ public class pnlMainMenu : MonoBehaviour
     [SerializeField] private GameObject _background;
     [SerializeField] private GameObject _txtTitle;
     [SerializeField] private GameObject _pnlOptionBoard;
-    [SerializeField] private Button _btnNewGame;
+    [SerializeField] private Button _btnSingle;
     [SerializeField] private Button _btnMultiplayer;
     [SerializeField] private Button _btnSetting;
     private float width;
@@ -30,7 +30,7 @@ public class pnlMainMenu : MonoBehaviour
     private void Init()
     {
         pnlManager.instance.IgnoreCast(true);
-        _btnNewGame.onClick.AddListener(OnButtonNewGameClick);
+        _btnSingle.onClick.AddListener(OnButtonSigleClick);
         _btnMultiplayer.onClick.AddListener(OnButtonMultiplayerClick);
         _btnSetting.onClick.AddListener(OnButtonSettingClick);
 
@@ -45,15 +45,17 @@ public class pnlMainMenu : MonoBehaviour
         MoveIn();
     }
 
-    private void OnButtonNewGameClick()
+    private void OnButtonSigleClick()
     {
         SoundManager.instance.PlayButtonClickSound();
+        GameController.instance.ePlayMode = EPlayMode.single;
         pnlManager.instance.StartGame();
     }
 
     private void OnButtonMultiplayerClick()
     {
         SoundManager.instance.PlayButtonClickSound();
+        GameController.instance.ePlayMode = EPlayMode.multi;
         pnlManager.instance.StartGame();
     }
 
@@ -65,7 +67,7 @@ public class pnlMainMenu : MonoBehaviour
 
     private void OnDisable()
     {
-        _btnNewGame.onClick.RemoveAllListeners();
+        _btnSingle.onClick.RemoveAllListeners();
         _btnMultiplayer.onClick.RemoveAllListeners();
         _btnSetting.onClick.RemoveAllListeners();
         StopAllCoroutines();
@@ -88,7 +90,7 @@ public class pnlMainMenu : MonoBehaviour
         for (int i = 0; i < _pnlOptionBoard.transform.childCount; i++)
         {
             _pnlOptionBoard.transform.GetChild(i).gameObject.SetActive(true);
-            _pnlOptionBoard.transform.GetChild(i).transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutBounce);
+            _pnlOptionBoard.transform.GetChild(i).transform.DOScale(Vector3.one, 0.25f).SetEase(Ease.Linear);
             yield return new WaitForSeconds(0.2f);
         }
         yield return new WaitForSeconds(0.5f);

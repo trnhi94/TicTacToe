@@ -26,18 +26,13 @@ public class pnlGameScene : MonoBehaviour
 
     private void OnEnable()
     {
-        Init();
     }
 
-    private void Init()
+    private void InitMultiPlayerMode()
     {
-        _playerData.ResetPlayerData();
         width = _background.GetComponent<RectTransform>().rect.width;
         height = _background.GetComponent<RectTransform>().rect.height;
-        _pnlBoard.gameObject.SetActive(false);
-        _btnMenu.gameObject.SetActive(false);
-        _playerX.SetActive(false);
-        _playerO.SetActive(false);
+        _playerData.ResetPlayerData();
         _btnMenu.onClick.AddListener(OnButtonMenuOnClick);
         _lstText ??= new List<TextMeshProUGUI>();
         for (int i = 0; i < _lstText.Count; i++)
@@ -50,6 +45,11 @@ public class pnlGameScene : MonoBehaviour
             _playerData.lstTextPlayerContent.Add(_lstText[i].text);
         }
         DataManager.instance.SaveData();
+    }
+
+    private void InitSingleMode()
+    {
+        _btnMenu.onClick.AddListener(OnButtonMenuOnClick);
     }
 
     private void OnButtonMenuOnClick()
@@ -69,6 +69,14 @@ public class pnlGameScene : MonoBehaviour
     public void StartNewGame()
     {
         MoveIn();
+        if(GameController.instance.ePlayMode == EPlayMode.single)
+        {
+            InitSingleMode();
+        }
+        else
+        {
+            InitMultiPlayerMode();
+        }
     }
 
     public void ResetBoardGame()
@@ -84,6 +92,10 @@ public class pnlGameScene : MonoBehaviour
     #region ----- ANIMATION -----
     private void MoveIn()
     {
+        _pnlBoard.gameObject.SetActive(false);
+        _btnMenu.gameObject.SetActive(false);
+        _playerX.SetActive(false);
+        _playerO.SetActive(false);
         _txtTitle.transform.localScale = Vector3.zero;
         _txtTitle.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutBounce).OnComplete(() =>
         {

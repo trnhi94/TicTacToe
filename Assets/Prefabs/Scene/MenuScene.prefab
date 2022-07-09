@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8239970608827298199}
   - component: {fileID: 8239970608827298198}
   m_Layer: 5
-  m_Name: btnNewGame
+  m_Name: btnSingle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -761,7 +761,7 @@ MonoBehaviour:
   _background: {fileID: 8239970609359124133}
   _txtTitle: {fileID: 8239970609448056544}
   _pnlOptionBoard: {fileID: 8239970609118786135}
-  _btnNewGame: {fileID: 8239970608827298198}
+  _btnSingle: {fileID: 8239970608827298198}
   _btnMultiplayer: {fileID: 8239970610135276165}
   _btnSetting: {fileID: 8239970610426383126}
 --- !u!1 &8239970609955691335
