@@ -85,6 +85,7 @@ public class pnlGameScene : MonoBehaviour
         _btnMenu.gameObject.SetActive(true);
         _playerX.SetActive(true);
         _playerO.SetActive(true);
+        StartNewGame();
     }
 
     #endregion.
